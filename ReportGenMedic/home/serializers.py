@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import patient, XrayReport
+from .models import Patient, XrayReport
 
 class XrayReportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,8 +10,8 @@ class PatientSerializer(serializers.ModelSerializer):
     report = XrayReportSerializer()
 
     class Meta:
-        model = patient
-        fields = ['id', 'name', 'phone', 'email', 'report']
+        model = Patient
+        fields = ["username",'name', 'phone', 'email', 'report']
 
     def create(self, validated_data):
         # Extract report data from validated data
@@ -21,6 +21,6 @@ class PatientSerializer(serializers.ModelSerializer):
         report_instance = XrayReport.objects.create(**report_data)
 
         # Create patient instance with the nested XrayReport instance
-        patient_instance = patient.objects.create(report=report_instance, **validated_data)
+        patient_instance = Patient.objects.create(report=report_instance, **validated_data)
 
         return patient_instance

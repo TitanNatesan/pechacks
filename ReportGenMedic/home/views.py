@@ -12,7 +12,7 @@ def patient_list(request):
 
     for p in patients:
         patient_data.append({
-            'id': p.id,
+            'id': p.username,
             'name': p.name,
             'username': p.username,
             'phone': str(p.phone),
@@ -31,7 +31,7 @@ def patient_search(request, name):
 
     for p in patients:
         patient_data.append({
-            'id': p.id,
+            'id': p.username,
             'name': p.name,
             'username': p.username,
             'phone': str(p.phone),
@@ -72,3 +72,13 @@ def upload_image(request):
 
         serializer = PatientSerializer(new_patient)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(["POST"])
+def login(request):
+    if request.method == "POST":
+        data = request.data
+        user = data['username']
+        password = data['password']
+        user = Patient.objects.get(username=user)
+        return Response("Success")
